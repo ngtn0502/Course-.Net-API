@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
@@ -7,23 +7,22 @@ namespace API.Interfaces
 {
     public interface IProductRepository
     {
-        void Update(Products product);
+        void Update(Product product);
 
-        Task<bool> SaveAllAsync();
 
-        Task<IEnumerable<Products>> GetProductsAsync();
+        Task<IQueryable<Product>> GetProductsAsync();
 
-        Task<Products> GetProductByIdAsync(int id);
+        Task<Product> GetProductByIdAsync(int id);
 
-        Task<Products> PostProductAsync(Products product);
+        Task<Product> CreateProductAsync(Product product);
 
-        Task<Products> EditProductAsync(int id, Products product);
+        Task<Product> UpdateProductAsync(int id, Product product);
 
         Task<DeleteResponse> DeleteProductAsync(int id);
 
-        Task<IEnumerable<Products>> SearchProductAsync(string query);
+        Task<PageResponse> SearchProductAsync(string query, int? pageNumber, int? pageSize);
 
-        Task<PageResponse> GetCoursesAsync(int category, int? pageNumber, int? pageSize);
+        Task<PageResponse> GetAllProductsAsync(int category, int? pageNumber, int? pageSize);
 
     }
 }

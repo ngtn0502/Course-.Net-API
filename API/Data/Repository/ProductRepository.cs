@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using API.Helpers;
 
 namespace API.Data
 {
@@ -15,35 +15,30 @@ namespace API.Data
         {
             _context = context;
         }
-        async Task<IEnumerable<Products>> IProductRepository.GetProductsAsync()
+        async Task<IQueryable<Product>> IProductRepository.GetProductsAsync()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _context.Products.ToListAsync();
+            return products.AsQueryable();
         }
 
-        async Task<Products> IProductRepository.GetProductByIdAsync(int id)
+        async Task<Product> IProductRepository.GetProductByIdAsync(int id)
         {
             return await _context.Products.FindAsync(id);
         }
 
-        async Task<bool> IProductRepository.SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
 
-
-        void IProductRepository.Update(Products product)
+        void IProductRepository.Update(Product product)
         {
             _context.Entry(product).State = EntityState.Modified;
         }
 
-        async Task<Products> IProductRepository.PostProductAsync(Products product)
+        async Task<Product> IProductRepository.CreateProductAsync(Product product)
         {
             await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
             return product;
         }
 
-        async Task<Products> IProductRepository.EditProductAsync(int id, Products newProduct)
+        async Task<Product> IProductRepository.UpdateProductAsync(int id, Product newProduct)
         {
             var product = await _context.Products.FindAsync(id);
 
@@ -58,7 +53,6 @@ namespace API.Data
             product.Instructor = newProduct.Instructor;
             product.Language = newProduct.Language;
 
-            await _context.SaveChangesAsync();
 
             return product;
         }
@@ -72,8 +66,6 @@ namespace API.Data
 
             _context.Remove(product);
 
-            await _context.SaveChangesAsync();
-
             var returnedObj = new DeleteResponse
             {
                 id = product.Id
@@ -82,8 +74,9 @@ namespace API.Data
             return returnedObj;
         }
 
-        async Task<IEnumerable<Products>> IProductRepository.SearchProductAsync(string query)
+        async Task<PageResponse> IProductRepository.SearchProductAsync(string query, int? pageNumber, int? pageSize)
         {
+
             var products = await (from product in _context.Products
                                   where
                                   (
@@ -94,25 +87,14 @@ namespace API.Data
                                   ||
                                   product.Instructor.ToLower().Contains(query.ToLower())
                                   )
-                                  select new Products
-                                  {
-                                      Id = product.Id,
-                                      Name = product.Name,
-                                      Description = product.Description,
-                                      Rating = product.Rating,
-                                      Price = product.Price,
-                                      CategoryId = product.CategoryId,
-                                      ImageUrl = product.ImageUrl,
-                                      Instructor = product.Instructor,
-                                      Language = product.Language,
-                                  }).ToListAsync();
-            return products;
+                                  select product).ToListAsync();
+
+
+            return PagedList.CreatePagedResponse(products, pageNumber, pageSize);
         }
 
-        async Task<PageResponse> IProductRepository.GetCoursesAsync(int category, int? pageNumber, int? pageSize)
+        async Task<PageResponse> IProductRepository.GetAllProductsAsync(int category, int? pageNumber, int? pageSize)
         {
-            int currentPageNumber = pageNumber ?? 1;
-            int currentpageSize = pageSize ?? 3;
 
             var products = await _context.Products.ToListAsync();
 
@@ -121,20 +103,22 @@ namespace API.Data
                 products = await _context.Products.Where(x => x.CategoryId == category).ToListAsync();
             }
 
-            var productsPage = products
-            .Skip((currentPageNumber - 1) * currentpageSize)
-            .Take(currentpageSize);
-
-            var response = new PageResponse
-            {
-                PageNumber = currentPageNumber,
-                TotalRecords = products.Count,
-                Products = productsPage
-            };
-
-            return response;
+            return PagedList.CreatePagedResponse(products, pageNumber, pageSize);
         }
 
+        public Task<Product> PostProductAsync(Product product)
+        {
+            throw new System.NotImplementedException();
+        }
 
+        public Task<Product> EditProductAsync(int id, Product product)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<PageResponse> GetCoursesAsync(int category, int? pageNumber, int? pageSize)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

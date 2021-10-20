@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Entities;
 
@@ -8,12 +8,10 @@ namespace API.Interfaces
     {
         void Update(Category category);
 
-        Task<bool> SaveAllAsync();
-
-        Task<IEnumerable<Category>> GetCategoryAsync();
+        Task<IQueryable<Category>> GetCategoryAsync();
 
         Task<Category> GetCategoryByIdAsync(int id);
 
-        Task<Category> PostCategoryAsync(Category category);
+        Task<Category> CreateCategoryAsync(Category category);
     }
 }
