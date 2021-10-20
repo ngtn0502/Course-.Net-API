@@ -32,13 +32,13 @@ namespace API.Data
             _context.Entry(product).State = EntityState.Modified;
         }
 
-        async Task<Product> IProductRepository.PostProductAsync(Product product)
+        async Task<Product> IProductRepository.CreateProductAsync(Product product)
         {
             await _context.Products.AddAsync(product);
             return product;
         }
 
-        async Task<Product> IProductRepository.EditProductAsync(int id, Product newProduct)
+        async Task<Product> IProductRepository.UpdateProductAsync(int id, Product newProduct)
         {
             var product = await _context.Products.FindAsync(id);
 
@@ -93,7 +93,7 @@ namespace API.Data
             return PagedList.CreatePagedResponse(products, pageNumber, pageSize);
         }
 
-        async Task<PageResponse> IProductRepository.GetCoursesAsync(int category, int? pageNumber, int? pageSize)
+        async Task<PageResponse> IProductRepository.GetAllProductsAsync(int category, int? pageNumber, int? pageSize)
         {
 
             var products = await _context.Products.ToListAsync();
@@ -106,12 +106,17 @@ namespace API.Data
             return PagedList.CreatePagedResponse(products, pageNumber, pageSize);
         }
 
-        public Task<IQueryable<Product>> GetProductAsync()
+        public Task<Product> PostProductAsync(Product product)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Product> PostProductAsync(Product product)
+        public Task<Product> EditProductAsync(int id, Product product)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<PageResponse> GetCoursesAsync(int category, int? pageNumber, int? pageSize)
         {
             throw new System.NotImplementedException();
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9hLqMjSB/7pCh0D/H7Er2WnutjGX+JUQBE3LFAllxFOtXMTE0U0zku5xE5ZBFZsxSYXqn/ruXYe7Khjhvb7k+A==",
+  "dgSpecHash": "GFpwBLwbHV+slVaYZXo1s9wy0k6QPQigRh4THDfaYKhX+yWt5smlNbEMyZmkrlTQddQr5AbXvmig5EQuoGGykw==",
   "success": true,
-  "projectFilePath": "E:\\C# and .NET\\netApp - Now\\API\\API.csproj",
+  "projectFilePath": "E:\\C# and .NET\\netApp - Part1\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.10\\microsoft.aspnetcore.authentication.jwtbearer.5.0.10.nupkg.sha512",

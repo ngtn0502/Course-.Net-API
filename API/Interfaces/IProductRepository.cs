@@ -14,15 +14,15 @@ namespace API.Interfaces
 
         Task<Product> GetProductByIdAsync(int id);
 
-        Task<Product> PostProductAsync(Product product);
+        Task<Product> CreateProductAsync(Product product);
 
-        Task<Product> EditProductAsync(int id, Product product);
+        Task<Product> UpdateProductAsync(int id, Product product);
 
         Task<DeleteResponse> DeleteProductAsync(int id);
 
         Task<PageResponse> SearchProductAsync(string query, int? pageNumber, int? pageSize);
 
-        Task<PageResponse> GetCoursesAsync(int category, int? pageNumber, int? pageSize);
+        Task<PageResponse> GetAllProductsAsync(int category, int? pageNumber, int? pageSize);
 
     }
 }
